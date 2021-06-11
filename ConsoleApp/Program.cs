@@ -2,6 +2,7 @@
 using SamuraiApp.Data.Model;
 using SamuraiApp.Domain;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleApp
@@ -11,8 +12,7 @@ namespace ConsoleApp
         private static SamuraiContext _context = new SamuraiContext(); 
         static void Main(string[] args)
         {
-
-            _context.Database.EnsureCreated();
+            //_context.Database.EnsureCreated();
             //GetSamurai("Before Add:");
             //AddSamurai();
             //GetSamurai("After Add:");
@@ -20,8 +20,19 @@ namespace ConsoleApp
             //Console.ReadKey();
             //QueryFilters();
             //RetrieveAndUpdateSamurai();
-            RetrieveAndUpdateMultipleSamurai();
+            //RetrieveAndUpdateMultipleSamurai();
+            //RetrieveAndDeleteSamurai();
+            //GetAllSamurai();
+        }
 
+        private static void GetAllSamurai()
+        {
+            var samurais =  _context.Samurais.ToList();
+            foreach (var samurai in samurais)
+            {
+                Console.WriteLine(samurai.Name);
+            }
+            Console.ReadKey();
         }
 
         private static void QueryFilters()
@@ -51,7 +62,7 @@ namespace ConsoleApp
 
         private static void AddSamurai()
         {
-            var samurai = new Samurai { Name = "Ahmed",HorseId = 2};
+            var samurai = new Samurai { Name = "Ahmed",HorseId = 1};
             _context.Samurais.Add(samurai);
             _context.SaveChanges();
         }
@@ -64,6 +75,13 @@ namespace ConsoleApp
             {
                 Console.WriteLine(samurai.Name);
             }
+        }
+        
+        private static void RetrieveAndDeleteSamurai()
+        {
+            var samurai = _context.Samurais.Find(18);
+            _context.Samurais.Remove(samurai);
+            _context.SaveChanges();
         }
     }
 }
