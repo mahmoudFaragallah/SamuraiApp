@@ -23,6 +23,30 @@ namespace ConsoleApp
             //RetrieveAndUpdateMultipleSamurai();
             //RetrieveAndDeleteSamurai();
             //GetAllSamurai();
+            InsertBattle();
+            QueryAndUpdateBattle_Disconnected()
+        }
+
+        private static void QueryAndUpdateBattle_Disconnected()
+        {
+            var battle = _context.Battles.AsNoTracking().FirstOrDefault();
+            battle.EndDate = new DateTime(1560, 5, 2);
+            using (var newContextInstance = new SamuraiContext())
+            {
+                newContextInstance.Battles.Update(battle);
+                newContextInstance.SaveChanges();
+            }
+        }
+
+        private static void InsertBattle()
+        {
+            _context.Battles.Add(new Battle
+            {
+                Name = "Battle of AbdElkadir",
+                StartDate =new DateTime(1245,2,2),
+                EndDate =new DateTime(1245,2,5)
+            });
+            _context.SaveChanges();
         }
 
         private static void GetAllSamurai()
@@ -83,5 +107,7 @@ namespace ConsoleApp
             _context.Samurais.Remove(samurai);
             _context.SaveChanges();
         }
+    
+
     }
 }

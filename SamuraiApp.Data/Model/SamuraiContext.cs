@@ -10,6 +10,7 @@ namespace SamuraiApp.Data.Model
     public class SamuraiContext : DbContext
     {
         public DbSet<Samurai> Samurais { get; set; }
+        public DbSet<Battle> Battles { get; set; }
         public DbSet<Quote> QuotesSamurais { get; set; }
         public DbSet<Clan> Clans { get; set; }
 
