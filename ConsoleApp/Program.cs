@@ -23,8 +23,24 @@ namespace ConsoleApp
             //RetrieveAndUpdateMultipleSamurai();
             //RetrieveAndDeleteSamurai();
             //GetAllSamurai();
-            InsertBattle();
-            QueryAndUpdateBattle_Disconnected()
+            //InsertBattle();
+            //QueryAndUpdateBattle_Disconnected();
+            InsertNewSamuraiWithQuote();
+        }
+
+        private static void InsertNewSamuraiWithQuote()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Mahmoud",
+                Quotes = new List<Quote> 
+                { 
+                    new Quote { Text = "I've come to save you"}
+                }
+            };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+            Console.ReadKey();
         }
 
         private static void QueryAndUpdateBattle_Disconnected()
@@ -86,7 +102,7 @@ namespace ConsoleApp
 
         private static void AddSamurai()
         {
-            var samurai = new Samurai { Name = "Ahmed",HorseId = 1};
+            var samurai = new Samurai { Name = "Ahmed" };
             _context.Samurais.Add(samurai);
             _context.SaveChanges();
         }
