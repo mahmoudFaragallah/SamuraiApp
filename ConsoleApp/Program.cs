@@ -30,7 +30,17 @@ namespace ConsoleApp
             //AddQuoteToExistingSamuraiNotTracked_Easy(8);
             //  ProjectSomeProperty();
             //ProjectSamuraiWithQuotes();
-            ExplicitLoadQuotes();
+            // ExplicitLoadQuotes();
+            FilteringWithRelatedData();
+        }
+
+        private static void FilteringWithRelatedData()
+        {
+            var samurai = _context.Samurais
+                                    .Where(e => e.QuotesSamurais
+                                    .Any(x => x.Text.Contains("dinner")))
+                                    .ToList();
+            Console.ReadKey();
         }
 
         private static void ExplicitLoadQuotes()
