@@ -27,29 +27,44 @@ namespace ConsoleApp
             //QueryAndUpdateBattle_Disconnected();
             // InsertNewSamuraiWithQuote();
             // EagerLoadSamuraiWithQuotes();
-            AddQuoteToExistingSamuraiNotTracked_Easy(8);
+            //AddQuoteToExistingSamuraiNotTracked_Easy(8);
+            //  ProjectSomeProperty();
+            ProjectSamuraiWithQuotes();
         }
 
-        private static void AddQuoteToExistingSamuraiNotTracked_Easy(int samuraiId)
+        private static void ProjectSamuraiWithQuotes()
         {
-            var quote = new Quote
+            //var somePropertyWithQuotes = _context.Samurais
+            //    .Select(e => new
+            //    {
+            //        e.Id,
+            //        e.Name,
+            //        e.QuotesSamurais.Count
+            //    })
+            //    .ToList();
+            var dinnerQuotes = _context.Samurais.Select(e => new
             {
-                Text = "Now that I saved you, will you feed me dinner again?",
-                SamuraiId = samuraiId
-            };
-            using (var newContext = new SamuraiContext())
-            {
-                newContext.QuotesSamurais.Add(quote);
-                newContext.SaveChanges();
-            }
+                e.Id,
+                e.Name,
+                DinnerQuotes = e.QuotesSamurais.Where(x => x.Text.Contains("dinner"))
+            }).ToList();
             Console.ReadKey();
         }
 
-        private static void EagerLoadSamuraiWithQuotes()
+        private static void ProjectSomeProperty()
         {
-            var samuraiWithQuotes = _context.Samurais.Where(e => e.Name.Contains("Mahmoud")).ToList();
-            //Find return or not samurai not dbSet
-            var firstSamurai = _context.Samurais.Find(1);
+            _context.Samurais.Select(e => new IdAndName(e.Id,e.Name)).ToList();
+            Console.ReadKey();
+        }
+        public struct IdAndName
+        {
+            public IdAndName(int id, string name)
+            {
+                Id = id;
+                Name = name;
+            }
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
 
         private static void InsertNewSamuraiWithQuote()
@@ -138,7 +153,26 @@ namespace ConsoleApp
             _context.Samurais.Remove(samurai);
             _context.SaveChanges();
         }
+        private static void AddQuoteToExistingSamuraiNotTracked_Easy(int samuraiId)
+        {
+            var quote = new Quote
+            {
+                Text = "Now that I saved you, will you feed me dinner again?",
+                SamuraiId = samuraiId
+            };
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.QuotesSamurais.Add(quote);
+                newContext.SaveChanges();
+            }
+            Console.ReadKey();
+        }
+        private static void EagerLoadSamuraiWithQuotes()
+        {
+            var samuraiWithQuotes = _context.Samurais.Where(e => e.Name.Contains("Mahmoud")).ToList();
+            //Find return or not samurai not dbSet
+            var firstSamurai = _context.Samurais.Find(1);
+        }
         
-
     }
 }
