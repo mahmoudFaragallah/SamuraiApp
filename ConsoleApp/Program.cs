@@ -31,7 +31,32 @@ namespace ConsoleApp
             //  ProjectSomeProperty();
             //ProjectSamuraiWithQuotes();
             // ExplicitLoadQuotes();
-            FilteringWithRelatedData();
+            // FilteringWithRelatedData();
+            // ModifyingRealtedDataWhenTracked();
+            ModifyingRelatedDataWhenNotTracked();
+        }
+
+        private static void ModifyingRelatedDataWhenNotTracked()
+        {
+            var samurai = _context.Samurais.Include(e => e.QuotesSamurais).FirstOrDefault(e => e.Id == 8);
+            var quote = samurai.QuotesSamurais[0];
+            quote.Text += "Hello From Related data with no tracked.";
+
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.Entry(quote).State = EntityState.Modified;
+                newContext.SaveChanges();
+            }
+            Console.ReadKey();
+        }
+
+        private static void ModifyingRealtedDataWhenTracked()
+        {
+            var samurai = _context.Samurais.Include(e => e.QuotesSamurais)
+                                           .FirstOrDefault(e => e.Id == 8);
+            samurai.QuotesSamurais[0].Text = "Do you hear that?";
+         //   _context.QuotesSamurais.Remove(samurai.QuotesSamurais[2]);
+            _context.SaveChanges();
         }
 
         private static void FilteringWithRelatedData()
