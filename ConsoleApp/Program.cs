@@ -25,7 +25,31 @@ namespace ConsoleApp
             //GetAllSamurai();
             //InsertBattle();
             //QueryAndUpdateBattle_Disconnected();
-            InsertNewSamuraiWithQuote();
+            // InsertNewSamuraiWithQuote();
+            // EagerLoadSamuraiWithQuotes();
+            AddQuoteToExistingSamuraiNotTracked_Easy(8);
+        }
+
+        private static void AddQuoteToExistingSamuraiNotTracked_Easy(int samuraiId)
+        {
+            var quote = new Quote
+            {
+                Text = "Now that I saved you, will you feed me dinner again?",
+                SamuraiId = samuraiId
+            };
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.QuotesSamurais.Add(quote);
+                newContext.SaveChanges();
+            }
+            Console.ReadKey();
+        }
+
+        private static void EagerLoadSamuraiWithQuotes()
+        {
+            var samuraiWithQuotes = _context.Samurais.Where(e => e.Name.Contains("Mahmoud")).ToList();
+            //Find return or not samurai not dbSet
+            var firstSamurai = _context.Samurais.Find(1);
         }
 
         private static void InsertNewSamuraiWithQuote()
@@ -33,7 +57,7 @@ namespace ConsoleApp
             var samurai = new Samurai
             {
                 Name = "Mahmoud",
-                Quotes = new List<Quote> 
+                QuotesSamurais = new List<Quote> 
                 { 
                     new Quote { Text = "I've come to save you"}
                 }
@@ -42,7 +66,6 @@ namespace ConsoleApp
             _context.SaveChanges();
             Console.ReadKey();
         }
-
         private static void QueryAndUpdateBattle_Disconnected()
         {
             var battle = _context.Battles.AsNoTracking().FirstOrDefault();
@@ -53,7 +76,6 @@ namespace ConsoleApp
                 newContextInstance.SaveChanges();
             }
         }
-
         private static void InsertBattle()
         {
             _context.Battles.Add(new Battle
@@ -64,7 +86,6 @@ namespace ConsoleApp
             });
             _context.SaveChanges();
         }
-
         private static void GetAllSamurai()
         {
             var samurais =  _context.Samurais.ToList();
@@ -74,7 +95,6 @@ namespace ConsoleApp
             }
             Console.ReadKey();
         }
-
         private static void QueryFilters()
         {
             // we have creates sperated variable to write prevent write hard code in sql 
@@ -85,28 +105,24 @@ namespace ConsoleApp
             //var samurai = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "M")).ToList();
             //var samurai = _context.Samurais.FirstOrDefault(s => s.Name == name);
         }
-
         private static void RetrieveAndUpdateMultipleSamurai()
         {
             var samuaris = _context.Samurais.Skip(1).Take(3).ToList();
             samuaris.ForEach(e => e.Name += "San");
             _context.SaveChanges();
         }
-
         private static void RetrieveAndUpdateSamurai()
         {
             var samurai = _context.Samurais.FirstOrDefault();
             samurai.Name += "San";
             _context.SaveChanges();
         }
-
         private static void AddSamurai()
         {
             var samurai = new Samurai { Name = "Ahmed" };
             _context.Samurais.Add(samurai);
             _context.SaveChanges();
         }
-
         private static void GetSamurai(string text)
         {
             var samurais = _context.Samurais.ToList();
@@ -115,15 +131,14 @@ namespace ConsoleApp
             {
                 Console.WriteLine(samurai.Name);
             }
-        }
-        
+        }       
         private static void RetrieveAndDeleteSamurai()
         {
             var samurai = _context.Samurais.Find(18);
             _context.Samurais.Remove(samurai);
             _context.SaveChanges();
         }
-    
+        
 
     }
 }
