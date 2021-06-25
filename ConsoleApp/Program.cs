@@ -29,7 +29,17 @@ namespace ConsoleApp
             // EagerLoadSamuraiWithQuotes();
             //AddQuoteToExistingSamuraiNotTracked_Easy(8);
             //  ProjectSomeProperty();
-            ProjectSamuraiWithQuotes();
+            //ProjectSamuraiWithQuotes();
+            ExplicitLoadQuotes();
+        }
+
+        private static void ExplicitLoadQuotes()
+        {
+            var samurai = _context.Samurais.FirstOrDefault(e => e.Name.Contains("Mahmoud"));
+            _context.Entry(samurai).Collection(e => e.QuotesSamurais).Load();
+            _context.Entry(samurai).Reference(e => e.Horse).Load();
+
+            Console.ReadKey();
         }
 
         private static void ProjectSamuraiWithQuotes()
